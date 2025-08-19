@@ -1,0 +1,180 @@
+
+.addcomponents {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 2rem;
+  padding: 2rem;
+  background-color: #f8fafc;
+  min-height: calc(100vh - 80px);
+}
+
+/* Shared form styles */
+.addDept, .addHall {
+  padding: 2.5rem;
+  border-radius: 16px;
+  width: 100%;
+  max-width: 400px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 1.5rem;
+  background-color: white;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  border: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.addDept:hover, .addHall:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.12);
+}
+
+/* Form header */
+.form-header {
+  text-align: center;
+  margin-bottom: 1rem;
+}
+
+.form-header h3 {
+  color: #2d3748;
+  font-size: 1.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.form-header p {
+  color: #718096;
+  font-size: 0.9rem;
+}
+
+/* Form input groups */
+.addDept div, .addHall div {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: 300px;
+}
+
+.addDept label, .addHall label {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #4a5568;
+  margin-bottom: 0.5rem;
+}
+
+.addDept input, .addHall input {
+  height: 2.8rem;
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+  padding: 0 1rem;
+  font-size: 1rem;
+  background-color: #f8fafc;
+  transition: all 0.3s ease;
+}
+
+.addDept input:focus, .addHall input:focus {
+  outline: none;
+  border-color: #4fd1c5;
+  box-shadow: 0 0 0 3px rgba(79, 209, 197, 0.2);
+  background-color: white;
+}
+
+/* Button styles */
+.addDept button, .addHall button {
+  height: 3rem;
+  width: 100%;
+  max-width: 300px;
+  border: none;
+  border-radius: 10px;
+  font-size: 1rem;
+  font-weight: 600;
+  background-color: #4fd1c5;
+  color: white;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.addDept button:hover, .addHall button:hover {
+  background-color: #38b2ac;
+  transform: translateY(-2px);
+}
+
+.addDept button:active, .addHall button:active {
+  transform: translateY(0);
+}
+
+/* Loader styles */
+.loader-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 200px;
+  width: 100%;
+}
+
+.spinner {
+  width: 50px;
+  height: 50px;
+  border: 4px solid rgba(79, 209, 197, 0.2);
+  border-top: 4px solid #4fd1c5;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin-bottom: 1rem;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .addcomponents {
+    padding: 1rem;
+    gap: 1.5rem;
+  }
+  
+  .addDept, .addHall {
+    padding: 1.5rem;
+  }
+}
+
+/* Different colors for each form */
+.addDept {
+  border-top: 4px solid #667eea;
+}
+
+.addHall {
+  border-top: 4px solid #ed64a6;
+}
+
+/* Add some icons to buttons */
+.addDept button::before {
+  content: "+";
+  font-size: 1.2rem;
+}
+
+.addHall button::before {
+  content: "+";
+  font-size: 1.2rem;
+}
+
+/* Input placeholder styling */
+::placeholder {
+  color: #a0aec0;
+  opacity: 1;
+}
+
+/* Success message */
+.success-message {
+  color: #38a169;
+  font-size: 0.9rem;
+  text-align: center;
+  margin-top: 1rem;
+}

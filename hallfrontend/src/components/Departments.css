@@ -1,0 +1,52 @@
+
+.departheader {
+  text-align: center;
+  font-size: 2rem;
+  margin-top: 40px;
+  margin-bottom: 30px;
+  color: #333;
+  font-weight: 600;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+.Departments {
+  display: flex;
+  gap: 20px;
+  padding: 20px 40px;
+  max-width: 400px;
+  margin: auto;
+  height:100%;
+  box-sizing: border-box;
+  flex-wrap: wrap;
+}
+
+.departmentCard {
+  background: linear-gradient(135deg, #e0f7fa, #b2ebf2);
+  border: 2px solid #4dd0e1;
+  min-width: 220px;
+  border-radius: 16px;
+  padding: 20px;
+  text-align: center;
+  color: #006064;
+  font-size: 18px;
+  font-weight: 500;
+  box-shadow: 0 8px 20px rgba(0, 96, 100, 0.1);
+  transition: all 0.3s ease-in-out;
+  cursor: pointer;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+.departmentCard:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 12px 24px rgba(0, 150, 136, 0.2);
+  background: linear-gradient(135deg, #b2ebf2, #80deea);
+  color: #004d40;
+  border-color: #00acc1;
+}
+
+@media (max-width: 600px) {
+  .departmentCard {
+    font-size: 16px;
+    padding: 16px;
+  }
+}

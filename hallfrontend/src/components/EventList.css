@@ -1,0 +1,704 @@
+
+
+.dat{
+    border: 1px solid black;
+    width:250px;
+    margin:auto;
+    text-align: center;
+    padding:30px;
+    border-radius: 30px;
+    margin-top: 30px;
+}
+.dat input{
+    height: 5vh;
+    width:200px;
+    border-radius: 20px;
+    border:1px solid black;
+    padding: 0 10px;
+    font-size: 15px;
+}
+.bookingCardsCont{
+    width:100%;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+}
+.bookingCards{
+    border: 1px solid black;
+    height:25vh;
+    padding:20px 20px 40px 20px;
+    width:300px;
+    border-radius: 20px;
+    margin:20px;
+}
+.EventListPage {
+  max-width: 400px;
+  margin: 2rem auto;
+  padding: 1rem;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.date-selector-container {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.section-title {
+  color: #2c3e50;
+  margin-bottom: 1.5rem;
+  font-weight: 600;
+}
+
+.date-selector {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.date-icon {
+  font-size: 1.5rem;
+  color: #3498db;
+}
+
+.date-input {
+  padding: 0.5rem 1rem;
+  border: 2px solid #dfe6e9;
+  border-radius: 8px;
+  font-size: 1rem;
+  outline: none;
+  transition: border 0.3s ease;
+}
+
+.date-input:focus {
+  border-color: #3498db;
+}
+
+.loader-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 300px;
+}
+
+.spinner {
+  width: 50px;
+  height: 50px;
+  border: 5px solid #f3f3f3;
+  border-top: 5px solid #3498db;
+  border-radius: 50%;
+  margin-bottom: 1rem;
+}
+
+.error-message {
+  text-align: center;
+  color: #e74c3c;
+  padding: 2rem;
+}
+
+.retry-button {
+  padding: 0.5rem 1.5rem;
+  background-color: #e74c3c;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-top: 1rem;
+  transition: background-color 0.3s;
+}
+
+.retry-button:hover {
+  background-color: #c0392b;
+}
+
+.booking-container {
+  margin-top: 2rem;
+}
+
+.booking-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1.5rem;
+  padding: 0.5rem;
+}
+
+.booking-card {
+  background: white;
+  border-radius: 10px;
+  padding: 1.5rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s, box-shadow 0.3s;
+  border-left: 4px solid #3498db;
+}
+
+.booking-card:hover {
+  box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+}
+
+.booking-card-header {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.booking-icon {
+  font-size: 1.2rem;
+  color: #3498db;
+}
+
+.booking-name {
+  margin: 0;
+  color: #2c3e50;
+  font-size: 1.2rem;
+}
+
+.booking-time, .booking-date {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 0.5rem 0;
+  color: #7f8c8d;
+}
+
+.time-icon, .date-icon-small {
+  font-size: 1rem;
+  color: #7f8c8d;
+}
+
+.time-range {
+  font-weight: 500;
+}
+
+.booking-description {
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid #ecf0f1;
+  display: flex;
+  gap: 0.5rem;
+}
+
+.info-icon {
+  font-size: 1rem;
+  color: #7f8c8d;
+  margin-top: 0.2rem;
+}
+
+.booking-description p {
+  margin: 0;
+  color: #34495e;
+  font-size: 0.95rem;
+  line-height: 1.4;
+}
+
+.no-bookings {
+  text-align: center;
+  padding: 3rem 1rem;
+  color: #7f8c8d;
+}
+
+.empty-state-image {
+  width: 120px;
+  height: 120px;
+  margin-bottom: 1rem;
+  opacity: 0.7;
+}
+
+.no-bookings h3 {
+  color: #2c3e50;
+  margin-bottom: 0.5rem;
+}
+
+@media (max-width: 768px) {
+  .EventListPage {
+    padding: 1rem 0.5rem;
+  }
+  
+  .booking-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .date-input {
+    width: 100%;
+    max-width: 300px;
+  }
+}
+/* Add these to your existing CSS */
+
+.date-navigation-controls {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.nav-button {
+  background: #3498db;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.nav-button:hover {
+  background: #2980b9;
+}
+
+.nav-button:disabled {
+  background: #bdc3c7;
+  cursor: not-allowed;
+}
+
+.past-dates-toggle {
+  margin-top: 1rem;
+  display: flex;
+  justify-content: center;
+}
+
+.past-dates-toggle label {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+  color: #7f8c8d;
+}
+
+.past-dates-toggle input {
+  cursor: pointer;
+}
+
+.past-booking {
+  opacity: 0.8;
+  border-left-color: #95a5a6;
+  background-color: #f8f9fa;
+}
+
+.past-badge {
+  background: #95a5a6;
+  color: white;
+  padding: 0.2rem 0.5rem;
+  border-radius: 12px;
+  font-size: 0.7rem;
+  margin-left: auto;
+}
+/* .PendingCont{
+    height:15vh;
+    padding:20px 0px;
+    min-width: 400px;
+    max-width: 1000px;
+    border-radius: 20px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center; */
+
+/* .PendingCards{
+    border: 1px solid black;
+    height:35vh;
+    padding:20px 20px 40px 20px;
+    width:300px;
+    border-radius: 20px;
+    margin:10px;
+    
+}
+.PendingCards button{
+    height:5vh;
+    width:100px;
+    border-radius: 10px;
+    padding:10px;
+    margin: 3px;
+    margin-left: 30px;
+}
+ */
+
+.AvailableCont {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 24px;
+  padding: 30px;
+  max-width: 1200px;
+  margin: auto;
+  box-sizing: border-box;
+  background-color: #f7f9fc;
+}
+
+.AvailableCards {
+  background: linear-gradient(135deg, #fdfbfb, #ebedee);
+  border: 2px solid #4facfe;
+  box-shadow: 0 8px 20px rgba(79, 172, 254, 0.2);
+  border-radius: 20px;
+  width: 300px;
+  padding: 20px 24px;
+  height: auto;
+  transition: all 0.3s ease-in-out;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+}
+
+.AvailableCards::before {
+  content: "";
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle at center, #4facfe 0%, #00f2fe 100%);
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  z-index: 0;
+}
+
+.AvailableCards:hover::before {
+  opacity: 0.1;
+}
+
+.AvailableCards:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 12px 30px rgba(0, 242, 254, 0.3);
+  border-color: #00f2fe;
+}
+
+.AvailableCards p {
+  margin: 10px 0;
+  font-size: 16px;
+  color: #333;
+  position: relative;
+  z-index: 1;
+}
+
+.AvailableCards p:first-child {
+  font-weight: bold;
+  font-size: 18px;
+  color: #4facfe;
+}
+
+/* Optional button inside card */
+.AvailableCards button {
+  margin-top: 10px;
+  background-color: #4facfe;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 12px;
+  transition: background-color 0.3s ease;
+  z-index: 1;
+  position: relative;
+}
+
+.AvailableCards button:hover {
+  background-color: #00c6ff;
+}
+
+/* Mobile-friendly */
+@media (max-width: 600px) {
+  .AvailableCards {
+    width: 90%;
+  }
+}
+
+/* EventList.css */
+
+/* Base styles */
+.pending-container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 2rem;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+.pending-header {
+  text-align: center;
+  margin-bottom: 3rem;
+}
+
+.pending-header h2 {
+  font-size: 2.2rem;
+  font-weight: 700;
+  color: #2d3748;
+  margin-bottom: 0.5rem;
+  background: linear-gradient(90deg, #4f46e5, #10b981);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.pending-subtitle {
+  font-size: 1.1rem;
+  color: #718096;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+/* Pending grid layout */
+.pending-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+  gap: 2rem;
+}
+
+/* Card styling */
+.pending-card {
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05), 0 4px 6px -2px rgba(0, 0, 0, 0.025);
+  padding: 1.5rem;
+  transition: all 0.3s ease;
+  border: 1px solid #e2e8f0;
+  position: relative;
+  overflow: hidden;
+}
+
+.pending-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 4px;
+  height: 100%;
+  background: linear-gradient(to bottom, #4f46e5, #10b981);
+}
+
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+
+.hall-info {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.card-icon {
+  font-size: 1.25rem;
+  color: #4f46e5;
+  background: #e0e7ff;
+  padding: 0.5rem;
+  border-radius: 8px;
+}
+
+.hall-info h3 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #1e293b;
+  margin: 0;
+}
+
+.status-badge {
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 0.25rem 0.75rem;
+  border-radius: 9999px;
+}
+
+.status-badge.pending {
+  background-color: #fef3c7;
+  color: #92400e;
+}
+
+.card-details {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.detail-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+}
+
+.detail-icon {
+  font-size: 1rem;
+  color: #64748b;
+  margin-top: 0.15rem;
+  flex-shrink: 0;
+}
+
+.meeting-description {
+  margin: 0;
+  color: #475569;
+  line-height: 1.5;
+}
+
+/* Action buttons */
+.card-actions {
+  display: flex;
+  gap: 0.75rem;
+  margin-top: 1.5rem;
+}
+
+.card-actions button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.25rem;
+  border-radius: 8px;
+  font-weight: 500;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border: none;
+  flex: 1;
+}
+
+.approve-btn {
+  background-color: #10b981;
+  color: white;
+}
+
+.approve-btn:hover {
+  background-color: #059669;
+}
+
+.reject-btn {
+  background-color: #f43f5e;
+  color: white;
+}
+
+.reject-btn:hover {
+  background-color: #e11d48;
+}
+
+/* Rejection form */
+.rejection-form {
+  margin-top: 1.5rem;
+  padding-top: 1.5rem;
+  border-top: 1px dashed #e2e8f0;
+}
+
+.form-group {
+  margin-bottom: 1rem;
+}
+
+.form-group label {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: #475569;
+  margin-bottom: 0.5rem;
+}
+
+.rejection-form textarea {
+  width: 100%;
+  min-height: 100px;
+  padding: 0.75rem;
+  border-radius: 8px;
+  border: 1px solid #e2e8f0;
+  font-family: inherit;
+  font-size: 0.9rem;
+  color: #1e293b;
+  resize: vertical;
+  transition: all 0.2s ease;
+}
+
+.rejection-form textarea:focus {
+  outline: none;
+  border-color: #4f46e5;
+  box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+}
+
+.submit-rejection {
+  width: 100%;
+  padding: 0.75rem;
+  border-radius: 8px;
+  background-color: #f43f5e;
+  color: white;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.submit-rejection:hover {
+  background-color: #e11d48;
+}
+
+/* Empty state */
+.no-pendings {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 400px;
+}
+
+.empty-state {
+  text-align: center;
+  max-width: 400px;
+}
+
+.empty-state img {
+  width: 150px;
+  height: 150px;
+  margin-bottom: 1.5rem;
+  opacity: 0.7;
+}
+
+.empty-state h3 {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #2d3748;
+  margin-bottom: 0.5rem;
+}
+
+.empty-state p {
+  color: #64748b;
+  font-size: 1rem;
+}
+
+/* Loader styles */
+.loader-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 50vh;
+}
+
+.spinner {
+  width: 50px;
+  height: 50px;
+  border: 4px solid rgba(79, 70, 229, 0.1);
+  border-top: 4px solid #4f46e5;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin-bottom: 1rem;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .pending-container {
+    padding: 1.5rem;
+  }
+  
+  .pending-header h2 {
+    font-size: 1.8rem;
+  }
+  
+  .pending-grid {
+    grid-template-columns: 1fr;
+  }
+}

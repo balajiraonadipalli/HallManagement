@@ -1,0 +1,122 @@
+/* Font Import */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&family=Open+Sans:wght@400;600&display=swap');
+
+/* Base Styles */
+.available-halls-page {
+  padding: 2rem;
+  font-family: 'Poppins', sans-serif;
+  max-width: 1400px;
+  margin: 0 auto;
+  height: 700px;
+}
+
+/* Card Container */
+.halls-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2rem;
+  justify-content:center;
+}
+
+/* Individual Card */
+.hall-card {
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+  width: calc(33.33% - 1.5rem); /* 3 cards per row with gap */
+  max-width: 500px;
+  min-width: 300px;
+  flex-grow: 1;
+  overflow: visible;
+}
+
+/* Card Header with Hall Name */
+.hall-header {
+  background: #3498db;
+  color: white;
+  padding: 1rem 1.5rem;
+  border-radius: 12px 12px 0 0;
+}
+
+.hall-name {
+  font-size: 1.3rem;
+  font-weight: 600;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.hall-name svg {
+  font-size: 1.2rem;
+}
+
+/* Card Content */
+.hall-content {
+  padding: 1.5rem;
+}
+
+.meeting-title {
+  font-size: 1.1rem;
+  font-weight: 500;
+  color: #2c3e50;
+  margin-bottom: 0.5rem;
+}
+
+.meeting-description {
+  font-size: 0.95rem;
+  color: #555;
+  line-height: 1.5;
+  margin-bottom: 1.5rem;
+  font-family: 'Open Sans', sans-serif;
+}
+
+/* Meeting Meta Info */
+.meeting-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.meta-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.9rem;
+  color: #555;
+  width: calc(50% - 0.5rem);
+}
+
+.meta-item svg {
+  color: #7f8c8d;
+  font-size: 0.9rem;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 1200px) {
+  .hall-card {
+    width: calc(50% - 1rem); /* 2 cards per row */
+  }
+}
+
+@media (max-width: 768px) {
+  .available-halls-page {
+    padding: 1.5rem;
+  }
+  
+  .halls-container {
+    gap: 1.5rem;
+  }
+}
+
+@media (max-width: 600px) {
+  .hall-card {
+    width: 100%; /* 1 card per row */
+    min-width: auto;
+  }
+  
+  .meta-item {
+    width: 100%;
+  }
+}

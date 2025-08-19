@@ -1,0 +1,201 @@
+/* Home.css */
+
+.home-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background-color: #f5f7fa;
+}
+
+.campus-view {
+  padding: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+.campus-title {
+  text-align: center;
+  color: #2d3748;
+  margin-bottom: 2rem;
+  font-size: 2rem;
+}
+
+.campus-map {
+  position: relative;
+  height: 500px;
+  background-color: #e2e8f0;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  margin-bottom: 2rem;
+  background-image: url("./assessts/mvgrlogo.jpeg");
+  background-size: cover;
+}
+
+.map-background {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  background-image: url('https://example.com/your-campus-map.jpg');
+  background-size: cover;
+  background-position: center;
+}
+
+.building {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  cursor: pointer;
+  text-align: center;
+  transition: all 0.3s ease;
+}
+
+.building-icon {
+  width: 50px;
+  height: 50px;
+  background-color: #4fd1c5;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto;
+  position: relative;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.building.active .building-icon {
+  background-color: #667eea;
+  transform: scale(1.2);
+}
+
+.meeting-badge {
+  position: absolute;
+  top: -5px;
+  right: -5px;
+  background-color: #ed64a6;
+  color: white;
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.7rem;
+  font-weight: bold;
+}
+
+.building-name {
+  margin-top: 0.5rem;
+  font-weight: 600;
+  color: #2d3748;
+  background-color: rgba(255, 255, 255, 0.8);
+  padding: 0.2rem 0.5rem;
+  border-radius: 4px;
+}
+
+.meetings-panel {
+  background-color: white;
+  border-radius: 16px;
+  padding: 1.5rem;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+}
+
+.meetings-panel h3 {
+  color: #2d3748;
+  margin-bottom: 1rem;
+  text-align: center;
+}
+
+.meetings-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.meeting-card {
+  background-color: #f8fafc;
+  border-radius: 12px;
+  padding: 1rem;
+  border-left: 4px solid #4fd1c5;
+  transition: all 0.3s ease;
+}
+
+.meeting-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.meeting-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.5rem;
+}
+
+.meeting-header h4 {
+  margin: 0;
+  color: #2d3748;
+  font-size: 1rem;
+}
+
+.meeting-time {
+  font-size: 0.8rem;
+  color: #718096;
+  background-color: #e2e8f0;
+  padding: 0.2rem 0.5rem;
+  border-radius: 4px;
+}
+
+.meeting-details {
+  font-size: 0.9rem;
+  color: #4a5568;
+}
+
+.meeting-details p {
+  margin: 0.3rem 0;
+}
+
+.no-meetings {
+  text-align: center;
+  color: #718096;
+  font-style: italic;
+}
+
+.loader {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 300px;
+}
+
+.spinner {
+  width: 50px;
+  height: 50px;
+  border: 4px solid rgba(79, 209, 197, 0.2);
+  border-top: 4px solid #4fd1c5;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin-bottom: 1rem;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .campus-view {
+    padding: 1rem;
+  }
+  
+  .meetings-list {
+    grid-template-columns: 1fr;
+  }
+  
+  .campus-map {
+    height: 400px;
+  }
+}
