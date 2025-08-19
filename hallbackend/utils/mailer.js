@@ -8,15 +8,18 @@ const transporter = nodemailer.createTransport({
   }
 });
 
-const sendBookingMail = async ({ to, subject, text }) => {
+const sendBookingMail = async ({ to, subject, text,html }) => {
   const mailOptions = {
     from: "akashbalu2001@gmail.com",
     to,
     subject,
-    text
+    text,
+    html
   };
 
   await transporter.sendMail(mailOptions);
 };
 
 module.exports = sendBookingMail;
+
+

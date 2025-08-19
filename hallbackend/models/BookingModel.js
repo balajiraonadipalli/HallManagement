@@ -21,6 +21,12 @@ const BookingSchema = new mongoose.Schema({
     bookingDate:{
         type:Date
     },
+    fromDate: {
+        type: Date
+    },
+    toDate: {
+        type: Date
+    },
     startTime:{
         type:String
     },

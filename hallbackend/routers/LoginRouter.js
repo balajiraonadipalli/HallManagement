@@ -23,7 +23,7 @@ LoginRouter.post("/Login", async (req, res) => {
 LoginRouter.post("/register", async (req, res) => {
     console.log(req.body);
     try {
-        const { email, password, username, admin } = req.body;
+        const { email, password, username, admin,department } = req.body;
         console.log(email + password + username + admin)
         const existUser = await UserModel.findOne({ email });
         console.log(existUser)
@@ -35,14 +35,14 @@ LoginRouter.post("/register", async (req, res) => {
             email,
             password,
             name: username,
-            role: admin
+            role: admin,
+            DeptName:department
         })
         res.status(201).json({ message: "Login successful", newUser,token:generateToken(newUser._id) })
     } catch (error) {
         res.status(500).json({ message: error })
     }
 })
-
 const generateToken = (id) => {
     return jstoken.sign({ id }, "Balaji", {
         expiresIn: "10d"
