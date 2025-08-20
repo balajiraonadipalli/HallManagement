@@ -15,7 +15,7 @@ app.use(express.json());
 //     credentials:true
 // }));
 app.use(cors({
-    origin: ["http://localhost:3000", "http://192.168.186.6:3000","*"],
+    origin: ["http://localhost:3000", "http://10.74.213.6","*"],
     methods:["POST","GET","PUT","PATCH","DELETE"],
     credentials:true
 }));

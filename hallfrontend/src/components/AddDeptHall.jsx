@@ -27,7 +27,9 @@ const AddDeptHall = () => {
     const handleDept = async () => {
         setDeptLoading(true);
         try {
+            console.log(hallForm)
             // const res = await axios.post("http://localhost:3900/addDept", {
+            
             const res = await axios.post(`${ip}/addDept`,{
                 DeptName: deptForm.DepartName,
             });
@@ -60,6 +62,7 @@ const AddDeptHall = () => {
         setHallLoading(true);
         try {
             // const res = await axios.post("http://localhost:3900/addHall", {
+            console.log(hallForm)
             const res = await axios.post(`${ip}/addHall`,{
                 hallName: hallForm.hallName,
                 capacity: hallForm.capacity,
@@ -142,7 +145,7 @@ const AddDeptHall = () => {
                                 value={hallForm.hallName}
                             />
                         </div>
-                        <div>
+                        {/* <div>
                             <label>Enter Department:</label>
                             <input 
                                 type='text' 
@@ -150,7 +153,19 @@ const AddDeptHall = () => {
                                 onChange={(e) => setHallForm({ ...hallForm, department: e.target.value })}
                                 value={hallForm.department}
                             />
-                        </div>
+                        </div> */}
+                        <div className="inputsform">
+                                <label>Department</label>
+                                <select required  onChange={(e) => setHallForm({ ...hallForm, department: e.target.value })}
+                                name='Department' className='department' value={hallForm.department} style={{marginLeft:"20px"}}>
+                                    <option value="">---select Department---</option>
+                                    {departments.map((dept) => (
+                                        <option key={dept._id} value={dept.department}>
+                                            {dept.DeptName}
+                                        </option>
+                                    ))}
+                                </select>
+                            </div>
                         <div>
                             <label>Enter the capacity:</label>
                             <input 

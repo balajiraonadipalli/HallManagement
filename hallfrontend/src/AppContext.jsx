@@ -12,7 +12,7 @@ const AppProvider = ({ children }) => {
     //     { _id: "d2", name: "ECE" }
     // ])
     const [departments, setDepartments] = useState([]);
-    const ip = "http://192.168.186.6:3900"
+    const ip = "http://localhost:3900"
     useEffect(() => {
         const fetchDepts = async () => {
             try {
