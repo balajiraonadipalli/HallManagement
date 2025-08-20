@@ -1,94 +1,4 @@
-// import React, { useEffect, useState } from 'react';
-// import Header from './Header';
-// import axios from 'axios';
-// import { toast, ToastContainer } from 'react-toastify';
-// import './EventList.css';
-// import { motion } from "framer-motion";
 
-// const EventList = () => {
-//   const today = new Date().toISOString().split("T")[0];
-//   const [selectedDate, setSelectedDate] = useState(today);
-//   const [data, setData] = useState([]);
-//   const [loading, setLoading] = useState(true);
-
-//   useEffect(() => {
-//     const fetchBookingsByDate = async () => {
-//       try {
-//         const res = await axios.post("http://localhost:3900/getallbookings", {
-//           date: selectedDate
-//         });
-//         if (res.status === 200) {
-//           toast.success("Fetched successfully");
-//           setData(res.data);
-//           console.log(res.data);
-//         } else {
-//           toast.error("Failed to fetch data");
-//         }
-//       } catch (error) {
-//         console.error("Error:", error);
-//         toast.error("Error fetching bookings");
-//       } finally {
-//         setLoading(false);
-//       }
-//     };
-
-//     fetchBookingsByDate();
-//   }, [selectedDate]);
-
-//   return (
-//     <>
-//       <Header />
-//       <div className='EventListPage'>
-//         <div className='dat'>
-//           <h3>Select the date:</h3>
-//           <input
-//             type='date'
-//             name='date'
-//             value={selectedDate}
-//             onChange={(e) => setSelectedDate(e.target.value)}
-//           />
-//         </div>
-
-//         {loading ? (
-//           <div className="loader-container">
-//             <motion.div
-//               className="spinner"
-//               animate={{ rotate: 360 }}
-//               transition={{ repeat: Infinity, duration: 1, ease: "linear" }}
-//             />
-//             <p>Loading...</p>
-//           </div>
-//         ) : (
-//           <div className='bookingCardsCont'>
-//             {Array.isArray(data) && data.length > 0 ? (
-//               <div>
-//                 {data.map((booking) => (
-//                   <div key={booking._id} className='bookingCards' data-aos="fade-right">
-//                     <b>
-//                       {booking.name}
-//                     </b>
-//                     <p>
-//                       {booking.bookingDate.split("T")[0]}
-//                     </p>
-//                     <b> startTime : {booking.startTime}-------</b>
-
-//                     <b>EndTime : {booking.endTime}</b><br /><br />
-//                     <b>Meeting Description:{booking.MeetingDescription}</b>
-//                   </div>
-//                 ))}
-//               </div>
-//             ) : (
-//               <p>No bookings found for selected date</p>
-//             )}
-//           </div>
-//         )}
-//       </div>
-//       {/* <ToastContainer /> */}
-//     </>
-//   );
-// };
-
-// export default EventList;
 import React, { useEffect, useState } from 'react';
 import Header from './Header';
 import axios from 'axios';
@@ -107,8 +17,9 @@ const EventList = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [showPastDates, setShowPastDates] = useState(false);
-  const {halls,token,ip} = useAppContext();
-  
+  const { halls, token, ip,departments } = useAppContext();
+  const [DeptName,setDeptName] = useState(""); 
+
   // Function to navigate dates
   const navigateDate = (direction) => {
     const date = new Date(selectedDate);
@@ -124,38 +35,38 @@ const EventList = () => {
     setSelectedDate(date.toISOString().split("T")[0]);
   };
 
-  
-    useEffect(() => {
+
+  useEffect(() => {
     const fetchBookingsByDate = async () => {
       try {
         setLoading(true);
         setError(null);
-        if(token){
-           const res = await axios.post(`${ip}/getallbookings`,{
-          // const res = await axios.post("http://localhost:3900/getallbookings", {
-          date: selectedDate
-        },{
-          headers:{
-            authorization:`Bearer ${token}`
+        if (token) {
+          const res = await axios.post(`${ip}/getallbookings`, {
+            // const res = await axios.post("http://localhost:3900/getallbookings", {
+            date: selectedDate
+          }, {
+            headers: {
+              authorization: `Bearer ${token}`
+            }
+          });
+          if (res.status === 200) {
+            setData(res.data);
+          } else {
+            throw new Error("Failed to fetch data");
           }
-        });
-        if (res.status === 200) {
-          setData(res.data);
         } else {
-          throw new Error("Failed to fetch data");
-        }
-        }else{
           // const res = await axios.get("http://localhost:3900/getallbookings", {
-          const res = await axios.get(`${ip}/getallbookings`,{
-          date: selectedDate
-        });
-        if (res.status === 200) {
-          setData(res.data);
-        } else {
-          throw new Error("Failed to fetch data");
+          const res = await axios.get(`${ip}/getallbookings`, {
+            date: selectedDate
+          });
+          if (res.status === 200) {
+            setData(res.data);
+          } else {
+            throw new Error("Failed to fetch data");
+          }
         }
-        }
-        
+
       } catch (error) {
         console.error("Error:", error);
         setError("Error fetching bookings. Please try again.");
@@ -168,7 +79,7 @@ const EventList = () => {
     fetchBookingsByDate();
   }, [selectedDate]);
 
-  
+
   const formatTime = (timeString) => {
     if (!timeString) return '';
     const [hours, minutes] = timeString.split(':');
@@ -184,6 +95,17 @@ const EventList = () => {
     <>
       {/* <Header /> */}
       <div className='EventListPage'>
+        <div className="inputsform">
+          <label>Department</label>
+          <select required  onChange={(e) => setDeptName(e.target.value)} name='Department' className='department' value={DeptName}>
+            <option value="">---select Department---</option>
+            {departments.map((dept) => (
+              <option key={dept._id} value={dept._id}>
+                {dept.DeptName}
+              </option>
+            ))}
+          </select>
+        </div>
         <div className='date-selector-container'>
           <h2 className='section-title'>Meeting Schedule</h2>
           <div className='date-navigation-controls'>
@@ -193,7 +115,7 @@ const EventList = () => {
               disabled={!showPastDates && new Date(selectedDate) <= new Date(todayString)}
               aria-label="Previous day"
             >
-            <FiChevronLeft />
+              <FiChevronLeft />
             </button>
             <div className='date-selector'>
               <FiCalendar className='date-icon' />
@@ -257,14 +179,15 @@ const EventList = () => {
           </div>
         ) : (
           <div className='booking-container'>
-            {Array.isArray(data) && data.length > 0 ? (
+            {Array.isArray(data) && data.filter((booking)=>booking.Department == DeptName).length > 0 ? (
               <motion.div
                 className="booking-grid"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ duration: 0.5 }}
               >
-                {data.map((booking) => (
+                {data.filter((booking)=>booking.Department == DeptName)
+                .map((booking) => (
                   <motion.div
                     key={booking._id}
                     className={`booking-card ${isPastDate(booking.bookingDate) ? 'past-booking' : ''}`}
@@ -322,7 +245,7 @@ const EventList = () => {
         )}
         <Departments />
       </div>
-      
+
       {/* <ToastContainer position="bottom-right" autoClose={3000} /> */}
     </>
   );

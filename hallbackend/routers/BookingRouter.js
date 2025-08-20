@@ -528,7 +528,7 @@ BookingRouter.post("/getallbookings", protect,async (req, res) => {
         $gte: startOfDay,
         $lt: endOfDay,
       },
-      Department:dept._id.toString(),
+      // Department:dept._id.toString(),
     });
     res.status(200).json(bookings);
   } catch (error) {
