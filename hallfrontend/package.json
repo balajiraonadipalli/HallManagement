@@ -2,6 +2,8 @@
   "name": "hallfrontend",
   "version": "0.1.0",
   "private": true,
+  "main": "index.js",
+  "homepage":"./",
   "dependencies": {
     "@fortawesome/free-solid-svg-icons": "^7.0.0",
     "@fortawesome/react-fontawesome": "^0.2.3",
