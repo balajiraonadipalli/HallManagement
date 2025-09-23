@@ -113,7 +113,7 @@ const PendingList = () => {
   return (
     <>
       <Header />
-      <ToastContainer 
+      {/* <ToastContainer 
         position="top-right"
         autoClose={3000}
         hideProgressBar={false}
@@ -123,7 +123,7 @@ const PendingList = () => {
         pauseOnFocusLoss
         draggable
         pauseOnHover
-      />
+      /> */}
       
       {loading ? (
         <div className="loader-container">

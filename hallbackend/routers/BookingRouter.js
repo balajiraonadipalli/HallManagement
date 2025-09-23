@@ -294,38 +294,6 @@ BookingRouter.post("/bookings", protect, async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 });
-// BookingRouter.get("/departments/name/:name/available-halls", async (req, res) => {
-//   try {
-//     const { date, startTime, endTime } = req.query;
-//     const name = req.params.name;
-//     console.log(name)
-//     console.log(date)
-//     const department = await Dept.findOne({ DeptName: name });
-//     if (!department) {
-//       return res.status(404).json({ error: "Department not found" });
-//     }
-//     const halls = await Hall.find({ department: department._id, isActive: true });
-//     const availableHalls = [];
-//     for (const hall of halls) {
-//       const overlapping = await Booking.findOne({
-//         hall: hall._id,
-//         bookingDate: new Date(date),
-//         status: { $in: ["pending", "approved"] },
-//         $or: [
-//           { startTime: { $lt: endTime }, endTime: { $gt: startTime } }
-//         ]
-//       });
-
-//       if (!overlapping) {
-//         availableHalls.push(hall);
-//       }
-//     }
-//     res.status(200).json(availableHalls);
-//   } catch (error) {
-//     res.status(500).json({ message: error })
-//   }
-// });
-
 BookingRouter.get("/departments/name/:name/available-halls", async (req, res) => {
   try {
     const { date } = req.query; // Expected format: YYYY-MM-DD
@@ -559,43 +527,6 @@ function timeToMinutes(time) {
   const [hours, minutes] = time.split(':').map(Number);
   return hours * 60 + minutes;
 }
-
-// BookingRouter.get('/bookings/fully-occupied', async (req, res) => {
-//   try {
-//     const bookings = await Booking.find({
-//       startTime: { $gte: '09:00' },
-//       endTime: { $lte: '16:00' }
-//     });
-
-//     // Group by date and calculate total occupied minutes
-//     const dateOccupancy = {};
-
-//     bookings.forEach((booking) => {
-//       const date = booking.bookingDate.toISOString().split('T')[0]; // format: YYYY-MM-DD
-
-//       const start = timeToMinutes(booking.startTime);
-//       const end = timeToMinutes(booking.endTime);
-//       const duration = end - start;
-
-//       if (!dateOccupancy[date]) {
-//         dateOccupancy[date] = 0;
-//       }
-
-//       dateOccupancy[date] += duration;
-//     });
-
-//     // Filter dates that are fully occupied (7 hours = 420 minutes)
-//     const fullyOccupiedDates = Object.keys(dateOccupancy).filter(
-//       (date) => dateOccupancy[date] >= 420
-//     );
-
-//     res.status(200).json(fullyOccupiedDates);
-//   } catch (err) {
-//     console.error(err);
-//     res.status(500).json({ message: "Error fetching fully occupied dates" });
-//   }
-// });
-
 
 function timeToMinutes(time) {
   const [hours, minutes] = time.split(':').map(Number);

@@ -7,12 +7,11 @@ const AppContext = createContext();
 
 const AppProvider = ({ children }) => {
     const navigate = useNavigate();
-    // const [departments,setDepartments] = useState([
-    //     { _id: "d1", name: "CSE" },
-    //     { _id: "d2", name: "ECE" }
-    // ])
     const [departments, setDepartments] = useState([]);
-    const ip = "http://localhost:3900"
+    const ip = "http://localhost:3900";
+    // const ip ="http://192.168.31.169:3900"; 
+    // const ip = "https://wvr2c64v-3000.inc1.devtunnels.ms/3900"
+    
     useEffect(() => {
         const fetchDepts = async () => {
             try {
@@ -28,12 +27,6 @@ const AppProvider = ({ children }) => {
         }
         fetchDepts();
     }, []);
-    // const [halls,setHalls] = useState([
-    //     { _id: "h1", hallName: "panini", deptname: "CSE" },
-    //     { _id: "h2", hallName: "LEE LAB", deptname: "CSE" },
-    //     { _id: "h3", hallName: "thomsan LAB", deptname: "ECE" },
-    //     { _id: "h4", hallName: "charan LAB", deptname: "ECE" },
-    // ]);
     const [halls, setHalls] = useState([]);
     useEffect(() => {
 

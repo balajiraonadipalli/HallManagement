@@ -203,33 +203,7 @@ function Form() {
                                     ))}
                                 </select>
                             </div>
-                            {/* <div className="inputsform">
-                                <label>Booking Date:</label>
-                                <input
-                                    type="date"
-                                    className='date'
-                                    name="bookingDate"
-                                    required
-                                    value={formData.bookingDate}
-                                    onChange={HandleChange}
-                                    min={new Date().toISOString().split('T')[0]} // Set min date to today
-                                />
-                                {dateError && <p className="error-message">{dateError}</p>}
-                            </div> */}
                             {bookingType === "single" ? (
-                                // <div className="inputsform">
-                                //     <label>Booking Date:</label>
-                                //     <input
-                                //         type="date"
-                                //         name="bookingDate"
-                                //         className="date"
-                                //         required
-                                //         value={formData.bookingDate}
-                                //         onChange={HandleChange}
-                                //         min={new Date().toISOString().split("T")[0]}
-                                //     />
-                                //     {dateError && <p className="error-message">{dateError}</p>}
-                                // </div>
                                 <>
                                     
                                     <div className="inputsform">
@@ -251,32 +225,6 @@ function Form() {
                                 </>
 
                             ) : (
-                                // <>
-                                //     <div className="inputsform">
-                                //         <label>From Date:</label>
-                                //         <input
-                                //             type="date"
-                                //             name="fromDate"
-                                //             className="date"
-                                //             required
-                                //             value={formData.fromDate}
-                                //             onChange={HandleChange}
-                                //             min={new Date().toISOString().split("T")[0]}
-                                //         />
-                                //     </div>
-                                //     <div className="inputsform">
-                                //         <label>To Date:</label>
-                                //         <input
-                                //             type="date"
-                                //             name="toDate"
-                                //             className="date"
-                                //             required
-                                //             value={formData.toDate}
-                                //             onChange={HandleChange}
-                                //             min={formData.fromDate || new Date().toISOString().split("T")[0]}
-                                //         />
-                                //     </div>
-                                // </>
                                 <>
                                     <div className='DatesPick'>
                                         <div className="inputsform">
