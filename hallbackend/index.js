@@ -6,6 +6,8 @@ const Hall = require("./models/HallModel");
 const BookingRouter = require("./routers/BookingRouter")
 const cors = require("cors");
 const { LoginRouter } = require("./routers/LoginRouter");
+require("dotenv").config();
+
 const app = express();
 
 app.use(express.json());
@@ -37,7 +39,7 @@ mongoose.connect("mongodb+srv://akashbalu2001_db_user:ormMwladdQ49rEqb@cluster0.
 app.use("/",BookingRouter);
 app.use("/",LoginRouter);
 
-app.listen(3900,'0.0.0.0',console.log("Server Started at 3900"));
+app.listen(process.env.PORT,'0.0.0.0',console.log("Server Started at 3900"));
 
 
 
