@@ -16,7 +16,6 @@ app.use(express.json());
 //     methods:["POST","GET","PUT","PATCH","DELETE"],
 //     credentials:true
 // }));
-
 //ormMwladdQ49rEqb
 //mongodb+srv://akashbalu2001_db_user:ormMwladdQ49rEqb@cluster0.6ujkutb.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0
 //mongodb+srv://akashbalu2001_db_user:<db_password>@cluster0.6ujkutb.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0
@@ -34,7 +33,6 @@ mongoose.connect("mongodb+srv://akashbalu2001_db_user:ormMwladdQ49rEqb@cluster0.
     console.log("MongoDb cconnected");
 });
 //mongodb://localhost:27017/hall_booking
-
 
 app.use("/",BookingRouter);
 app.use("/",LoginRouter);
