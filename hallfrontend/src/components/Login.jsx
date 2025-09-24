@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import Header from './Header';
 import "./Login.css"
 import axios from 'axios';
@@ -14,9 +14,9 @@ const Login = () => {
     const [login, setLogin] = useState(false);
     const [admin, setAdmin] = useState("user");
     const navigate = useNavigate();
-    const { token, setToken,adm,setAdm,departments,ip } = useAppContext();
+    const { setToken, setAdm, departments, ip } = useAppContext();
     const [loading, setLoading] = useState(false);
-    const [dept,setDept] = useState("");
+    const [dept, setDept] = useState("");
     const Login = async () => {
         console.log(email + password + admin + username);
         setLoading(true);
@@ -30,7 +30,7 @@ const Login = () => {
                         password,
                         admin
                     });
-                    if (res.status == 201) {
+                    if (res.status === 201) {
                         toast.success("Login succcssful")
                         localStorage.setItem("token", res.data.token)
                         localStorage.setItem("adm",res.data.existUser.role)
@@ -41,7 +41,7 @@ const Login = () => {
                         navigate("/Booking")
                     }
                 } catch (error) {
-                    if (error.status == 400) {
+                    if (error.status === 400) {
                         toast.error("Invalid credentials")
                     } else {
                         toast.error(error)
@@ -60,7 +60,7 @@ const Login = () => {
                     username,
                     department: dept,
                 });
-                if (res.status == 201) {
+                if (res.status === 201) {
                     toast.success("Registered Succcesfully Login with your credentials")
                     localStorage.setItem("token", res.data.token)
                     console.log(res.data.token);

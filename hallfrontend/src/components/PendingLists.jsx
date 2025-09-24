@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from 'react';
 import Header from './Header';
 import axios from 'axios';
-import { ToastContainer, toast } from 'react-toastify';
+import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import './EventList.css';
 import { motion } from "framer-motion";
@@ -53,8 +53,7 @@ const PendingList = () => {
     const fetchPendingLists = async () => {
       try {
         setLoading(true);
-        // const res = await axios.get("http://localhost:3900/getpendings",{
-          const res = await axios.get(`${ip}/getpendings`,{
+        const res = await axios.get(`${ip}/getpendings`,{
           headers:{
             authorization:`Bearer ${token}`
           }
@@ -73,7 +72,7 @@ const PendingList = () => {
     };
 
     fetchPendingLists();
-  }, [halls]);
+  }, [halls, ip, token]);
 
   const HandleApprove = async (bookingId, status, reason = "") => {
     const toastId = toast.loading("Processing request...",);
