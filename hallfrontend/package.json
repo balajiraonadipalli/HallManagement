@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "main": "index.js",
-  "homepage":"./",
+  "homepage":"/",
   "dependencies": {
     "@fortawesome/free-solid-svg-icons": "^7.0.0",
     "@fortawesome/react-fontawesome": "^0.2.3",
@@ -34,6 +34,7 @@
   "test": "react-scripts test",
   "eject": "react-scripts eject"
 },
+  
   "eslintConfig": {
     "extends": [
       "react-app",
