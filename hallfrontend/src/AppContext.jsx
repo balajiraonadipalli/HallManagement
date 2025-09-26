@@ -6,7 +6,7 @@ const AppContext = createContext();
 
 const AppProvider = ({ children }) => {
     const [departments, setDepartments] = useState([]);
-    const ip = process.env.ip || "https://hallmanagement-2.onrender.com";
+    const ip = process.env.ip || "https://hallmanagement-3.onrender.com";
     // const ip ="http://192.168.31.169:3900"; 
     // const ip = "https://wvr2c64v-3000.inc1.devtunnels.ms/3900"
     
