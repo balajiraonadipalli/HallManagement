@@ -14,6 +14,7 @@
     "@testing-library/user-event": "^13.5.0",
     "aos": "^2.3.4",
     "axios": "^1.10.0",
+    "dotenv": "^17.2.2",
     "gsap": "^3.13.0",
     "motion": "^12.23.3",
     "ngrok": "^5.0.0-beta.2",
@@ -26,14 +27,12 @@
     "react-toastify": "^11.0.5",
     "web-vitals": "^2.1.4"
   },
-  
   "scripts": {
-  "start": "react-scripts start",
- "build": "CI=false react-scripts build",
-  "test": "react-scripts test",
-  "eject": "react-scripts eject"
-},
-  
+    "start": "react-scripts start",
+    "build": "CI=false react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject"
+  },
   "eslintConfig": {
     "extends": [
       "react-app",
