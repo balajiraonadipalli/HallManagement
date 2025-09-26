@@ -1,12 +1,10 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react'
 import { useContext, createContext } from 'react'
-import { useNavigate } from 'react-router-dom';
 
 const AppContext = createContext();
 
 const AppProvider = ({ children }) => {
-    const navigate = useNavigate();
     const [departments, setDepartments] = useState([]);
     const ip = "http://localhost:3900";
     // const ip ="http://192.168.31.169:3900"; 
@@ -16,7 +14,7 @@ const AppProvider = ({ children }) => {
         const fetchDepts = async () => {
             try {
                 const res = await axios.get(`${ip}/fetchDepts`);
-                if (res.status == 200) {
+                if (res.status === 200) {
                     setDepartments(res.data.fetchDepts);
                 }
                 console.log(res.data.fetchDepts)
@@ -34,7 +32,7 @@ const AppProvider = ({ children }) => {
             try {
                  const res = await axios.get(`${ip}/fetchHalls`);
                 // const res = await axios.get("http://localhost:3900/fetchHalls");
-                if (res.status == 200) {
+                if (res.status === 200) {
                     setHalls(res.data.fetchHalls)
                 }
                 console.log(res.data.fetchHalls);
