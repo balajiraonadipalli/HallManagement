@@ -4,7 +4,7 @@ import React, { useState } from 'react'
 import Header from './Header'
 import "./AddDeptHall.css"
 import { motion } from "framer-motion"
-import { toast, ToastContainer } from 'react-toastify'
+import { toast } from 'react-toastify'
 import axios from "axios"
 import { useAppContext } from '../AppContext'
 
@@ -20,7 +20,7 @@ const AddDeptHall = () => {
         department: ""
     });
     
-    const { departments, halls, setDepartments, setHalls,ip } = useAppContext();
+    const { departments, setDepartments,ip } = useAppContext();
     const [deptLoading, setDeptLoading] = useState(false);
     const [hallLoading, setHallLoading] = useState(false);
 

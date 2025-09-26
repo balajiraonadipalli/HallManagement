@@ -3,8 +3,6 @@ import "./Departments.css"
 import { motion } from "framer-motion"
 import { Link } from 'react-router-dom'
 import { useAppContext } from '../AppContext'
-import Header from './Header'
-import {gsap} from "gsap";
 import AOS from "aos";
 import "aos/dist/aos.css";
 const Departments = () => {

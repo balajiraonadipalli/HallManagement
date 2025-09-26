@@ -1,8 +1,7 @@
 
 import React, { useEffect, useState } from 'react';
-import Header from './Header';
 import axios from 'axios';
-import { toast, ToastContainer } from 'react-toastify';
+import { toast} from 'react-toastify';
 import './EventList.css';
 import { motion } from "framer-motion";
 import { FiCalendar, FiClock, FiUser, FiInfo, FiChevronLeft, FiChevronRight } from 'react-icons/fi';
@@ -17,7 +16,7 @@ const EventList = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [showPastDates, setShowPastDates] = useState(false);
-  const { halls, token, ip,departments } = useAppContext();
+  const {  token, ip,departments } = useAppContext();
   const [DeptName,setDeptName] = useState(""); 
 
   // Function to navigate dates
@@ -179,14 +178,14 @@ const EventList = () => {
           </div>
         ) : (
           <div className='booking-container'>
-            {Array.isArray(data) && data.filter((booking)=>booking.Department == DeptName).length > 0 ? (
+            {Array.isArray(data) && data.filter((booking)=>booking.Department === DeptName).length > 0 ? (
               <motion.div
                 className="booking-grid"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ duration: 0.5 }}
               >
-                {data.filter((booking)=>booking.Department == DeptName)
+                {data.filter((booking)=>booking.Department === DeptName)
                 .map((booking) => (
                   <motion.div
                     key={booking._id}

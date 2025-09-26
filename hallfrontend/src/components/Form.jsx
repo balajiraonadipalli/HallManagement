@@ -2,16 +2,14 @@
 import React, { useState } from 'react';
 import { useAppContext } from '../AppContext';
 import axios from "axios";
-import { ToastContainer, toast } from 'react-toastify';
+import {  toast } from 'react-toastify';
 import "./Form.css";
 import { motion } from "framer-motion";
 import Header from './Header';
-import Departments from './Departments';
 import EventList from './EventList';
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 function Form() {
-    const { name } = useAppContext();
     const [FilteredHalls, setFilteredHalls] = useState([]);
     const [dateError, setDateError] = useState("");
 
@@ -66,7 +64,7 @@ function Form() {
                         authorization: `Bearer ${token}`,
                     }
                 });
-                if (res.status == 200 || res.status === 201) {
+                if (res.status === 200 || res.status === 201) {
                     toast.success("Booking status will be sent to your email");
                     setFormData(initialFormState);
                 } else {
@@ -100,7 +98,7 @@ function Form() {
 
       //  Handle department change and hall filtering
         if (name === "Department") {
-            const hallsDept = halls.filter(h => h.department == value);
+            const hallsDept = halls.filter(h => h.department === value);
             setFilteredHalls(hallsDept);
             setFormData(prev => ({ ...prev, hallName: '' }));
         }

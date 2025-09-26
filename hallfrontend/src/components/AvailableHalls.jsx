@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from 'react';
 import Header from './Header';
 import axios from 'axios';
-import { toast, ToastContainer } from 'react-toastify';
+import { toast } from 'react-toastify';
 import './AvailableHalls.css';
 import { useParams } from 'react-router-dom';
 import { motion } from "framer-motion";
@@ -21,8 +21,6 @@ const AvailableHalls = () => {
     const { name } = useParams();
     const [data, setData] = useState([]);
     const today = new Date().toISOString().split("T")[0];
-    const startTime = "10:00";
-    const endTime = "12:00";
     const [loading, setLoading] = useState(true);
     const { halls,ip } = useAppContext();
     const getHallName = (hallId) => {
