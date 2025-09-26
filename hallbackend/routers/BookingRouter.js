@@ -224,11 +224,15 @@ BookingRouter.get("/departments/name/:name/available-halls", async (req, res) =>
 
 BookingRouter.get("/getpendings",protect, async (req, res) => {
   try {
+    console.log("This is the pending Route")
+    console.log(req.user);
     const dept = await Dept.findOne({ DeptName: req.user.DeptName });
+    console.log(dept);  
 const pendingList = await Booking.find({
   status: "pending",
   Department: dept._id.toString()
 });
+    console.log(pendingList); 
     if (pendingList) {
       return res.status(200).json({ pendingList })
     }

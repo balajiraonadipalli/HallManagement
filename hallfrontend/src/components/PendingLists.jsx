@@ -53,6 +53,7 @@ const PendingList = () => {
     const fetchPendingLists = async () => {
       try {
         setLoading(true);
+        console.log("Fetching pending bookings...");
         const res = await axios.get(`${ip}/getpendings`,{
           headers:{
             authorization:`Bearer ${token}`
