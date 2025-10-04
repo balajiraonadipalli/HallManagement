@@ -12,10 +12,18 @@ const app = express();
 
 app.use(express.json());
 app.use(cors({
-    origin: ["http://localhost:3000", "http://192.168.31.169","*"],
-    methods:["POST","GET","PUT","PATCH","DELETE"],
-    credentials:true
+    origin: [
+        'https://hall-management-sandy.vercel.app', // Your Vercel frontend
+        'http://localhost:3000' // Local development
+    ],
+    credentials: true,
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization']
 }));
+
+// Or simpler - allow all origins (for testing):
+app.use(cors()); // This allows all domains
+
 mongoose.connect(process.env.mongoDb)
 .then(() =>{
     console.log("MongoDb cconnected");
