@@ -3,7 +3,7 @@ const express = require("express");
 const Hall = require("../models/HallModel");
 const Dept = require("../models/DepartmentModel")
 const BookingRouter = express.Router();
-const sendBookingMail = require("../utils/mailer");
+const { sendBookingMail, sendMultipleEmails } = require("../utils/mailer");
 const { protect } = require("../middleware/protect");
 const UserModel = require("../models/UserModel");
 
@@ -85,106 +85,111 @@ BookingRouter.post("/bookings", protect, async (req, res) => {
     }
 
 
-    // Send confirmation mail
-    // await sendBookingMail({
-    //   to: req.user.email,
-    //   subject: `Hall Booking Confirmation - ${hallName}`,
-    //   text: `Your booking(s) for hall "${hallName}" from ${startTime} to ${endTime} ${dates.length > 1
-    //       ? `on multiple days from ${fromDate} to ${toDate}`
-    //       : `on ${bookingDate}`
-    //     } is confirmed (status: pending).`
-    // });
-    await sendBookingMail({
-  to: req.user.email,
-  subject: `Hall Booking Confirmation - ${hallName}`,
-  text: `Your booking(s) for hall "${hallName}" from ${startTime} to ${endTime} ${
-    dates.length > 1
-      ? `on multiple days from ${fromDate} to ${toDate}`
-      : `on ${bookingDate}`
-  } is confirmed (status: pending).`,
-  html: `
-    <div style="font-family: Arial, sans-serif; padding: 20px; background-color: #f4f4f4;">
-      <div style="max-width: 600px; margin: auto; background: white; border-radius: 10px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); padding: 30px;">
-        <h2 style="color: #2c3e50;">🎉 Hall Booking Confirmed!</h2>
-        <p style="font-size: 16px; color: #333;">Hello <strong>${req.user.name}</strong>,</p>
-        
-        <p style="font-size: 16px;">
-          Your booking for the hall <strong>"${hallName}"</strong> has been successfully received and is currently <span style="color: orange; font-weight: bold;">Pending Approval</span>.
-        </p>
-
-        <hr style="border: none; border-top: 1px solid #ddd; margin: 20px 0;" />
-
-        <p><strong>🕒 Time Slot:</strong> ${startTime} to ${endTime}</p>
-        <p><strong>📅 Booking ${dates.length > 1 ? 'Dates' : 'Date'}:</strong> ${dates.length > 1 ? `${fromDate} to ${toDate}` : bookingDate}</p>
-
-        <p style="margin-top: 20px; font-size: 14px; color: #555;">
-          You will receive another email once the booking is approved or rejected by the admin.
-        </p>
-
-        <p style="margin-top: 30px; font-size: 12px; color: #999;">
-          📬 This is an automated message from the Hall Booking System. Please do not reply to this email.
-        </p>
-      </div>
-    </div>
-  `
-});
-
+    // Send confirmation emails in parallel for better performance
     console.log(department.DeptName);
-    const admin = await UserModel.findOne({ DeptName:department.DeptName, role: "admin" });
+    const admin = await UserModel.findOne({ DeptName: department.DeptName, role: "admin" });
     console.log(admin);
- await sendBookingMail({
-  to: admin.email,
-  subject: `New Hall Booking Request - ${hallName}`,
-  text: `A new hall booking request has been made and requires your approval.`,
-  html: `
-    <div style="max-width: 600px; margin: auto; padding: 20px; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f9f9f9; border: 1px solid #e0e0e0; border-radius: 8px;">
-      <h2 style="color: #34495e; text-align: center; border-bottom: 2px solid #3498db; padding-bottom: 10px;">📌 Hall Booking Request</h2>
-      <table style="width: 100%; margin-top: 20px; color: #2c3e50;">
-        <tr>
-          <td style="padding: 8px;"><strong>🏛️ Hall:</strong></td>
-          <td style="padding: 8px;">${hallName}</td>
-        </tr>
-        <tr>
-          <td style="padding: 8px;"><strong>👤 Booked By:</strong></td>
-          <td style="padding: 8px;">${name}</td>
-        </tr>
-        <tr>
-          <td style="padding: 8px;"><strong>📧 Email:</strong></td>
-          <td style="padding: 8px;">${req.user.email}</td>
-        </tr>
-        <tr>
-          <td style="padding: 8px;"><strong>🏫 Department:</strong></td>
-          <td style="padding: 8px;">${department.DeptName}</td>
-        </tr>
-        <tr>
-          <td style="padding: 8px; vertical-align: top;"><strong>📝 Meeting Description:</strong></td>
-          <td style="padding: 8px;">${MeetingDescription || "Not provided"}</td>
-        </tr>
-        <tr>
-          <td style="padding: 8px;"><strong>⏰ Time Slot:</strong></td>
-          <td style="padding: 8px;">${startTime} to ${endTime}</td>
-        </tr>
-        <tr>
-          <td style="padding: 8px;"><strong>📅 ${dates.length > 1 ? "Booking Dates" : "Booking Date"}:</strong></td>
-          <td style="padding: 8px;">
-            ${dates.length > 1 ? `${fromDate} to ${toDate}` : `${bookingDate}`}
-          </td>
-        </tr>
-        <tr>
-          <td style="padding: 8px;"><strong>📌 Status:</strong></td>
-          <td style="padding: 8px; color: #e67e22; font-weight: bold;">Pending Approval ✅</td>
-        </tr>
-      </table>
-      <p style="margin-top: 30px; font-size: 15px;">
-        Please review this booking request and approve or reject it in the admin dashboard.
-      </p>
-      <hr style="margin: 30px 0; border: none; border-top: 1px solid #dcdcdc;" />
-      <p style="font-size: 12px; color: #999; text-align: center;">
-        📬 This is an automated message from the Hall Booking System. Please do not reply.
-      </p>
-    </div>
-  `
-});
+
+    // Prepare emails for parallel sending
+    const emailsToSend = [
+      {
+        to: req.user.email,
+        subject: `Hall Booking Confirmation - ${hallName}`,
+        text: `Your booking(s) for hall "${hallName}" from ${startTime} to ${endTime} ${
+          dates.length > 1
+            ? `on multiple days from ${fromDate} to ${toDate}`
+            : `on ${bookingDate}`
+        } is confirmed (status: pending).`,
+        html: `
+          <div style="font-family: Arial, sans-serif; padding: 20px; background-color: #f4f4f4;">
+            <div style="max-width: 600px; margin: auto; background: white; border-radius: 10px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); padding: 30px;">
+              <h2 style="color: #2c3e50;">🎉 Hall Booking Confirmed!</h2>
+              <p style="font-size: 16px; color: #333;">Hello <strong>${req.user.name}</strong>,</p>
+              
+              <p style="font-size: 16px;">
+                Your booking for the hall <strong>"${hallName}"</strong> has been successfully received and is currently <span style="color: orange; font-weight: bold;">Pending Approval</span>.
+              </p>
+
+              <hr style="border: none; border-top: 1px solid #ddd; margin: 20px 0;" />
+
+              <p><strong>🕒 Time Slot:</strong> ${startTime} to ${endTime}</p>
+              <p><strong>📅 Booking ${dates.length > 1 ? 'Dates' : 'Date'}:</strong> ${dates.length > 1 ? `${fromDate} to ${toDate}` : bookingDate}</p>
+
+              <p style="margin-top: 20px; font-size: 14px; color: #555;">
+                You will receive another email once the booking is approved or rejected by the admin.
+              </p>
+
+              <p style="margin-top: 30px; font-size: 12px; color: #999;">
+                📬 This is an automated message from the Hall Booking System. Please do not reply to this email.
+              </p>
+            </div>
+          </div>
+        `
+      }
+    ];
+
+    // Add admin email only if admin exists
+    if (admin && admin.email) {
+      emailsToSend.push({
+        to: admin.email,
+        subject: `New Hall Booking Request - ${hallName}`,
+        text: `A new hall booking request has been made and requires your approval.`,
+        html: `
+          <div style="max-width: 600px; margin: auto; padding: 20px; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f9f9f9; border: 1px solid #e0e0e0; border-radius: 8px;">
+            <h2 style="color: #34495e; text-align: center; border-bottom: 2px solid #3498db; padding-bottom: 10px;">📌 Hall Booking Request</h2>
+            <table style="width: 100%; margin-top: 20px; color: #2c3e50;">
+              <tr>
+                <td style="padding: 8px;"><strong>🏛️ Hall:</strong></td>
+                <td style="padding: 8px;">${hallName}</td>
+              </tr>
+              <tr>
+                <td style="padding: 8px;"><strong>👤 Booked By:</strong></td>
+                <td style="padding: 8px;">${name}</td>
+              </tr>
+              <tr>
+                <td style="padding: 8px;"><strong>📧 Email:</strong></td>
+                <td style="padding: 8px;">${req.user.email}</td>
+              </tr>
+              <tr>
+                <td style="padding: 8px;"><strong>🏫 Department:</strong></td>
+                <td style="padding: 8px;">${department.DeptName}</td>
+              </tr>
+              <tr>
+                <td style="padding: 8px; vertical-align: top;"><strong>📝 Meeting Description:</strong></td>
+                <td style="padding: 8px;">${MeetingDescription || "Not provided"}</td>
+              </tr>
+              <tr>
+                <td style="padding: 8px;"><strong>⏰ Time Slot:</strong></td>
+                <td style="padding: 8px;">${startTime} to ${endTime}</td>
+              </tr>
+              <tr>
+                <td style="padding: 8px;"><strong>📅 ${dates.length > 1 ? "Booking Dates" : "Booking Date"}:</strong></td>
+                <td style="padding: 8px;">
+                  ${dates.length > 1 ? `${fromDate} to ${toDate}` : `${bookingDate}`}
+                </td>
+              </tr>
+              <tr>
+                <td style="padding: 8px;"><strong>📌 Status:</strong></td>
+                <td style="padding: 8px; color: #e67e22; font-weight: bold;">Pending Approval ✅</td>
+              </tr>
+            </table>
+            <p style="margin-top: 30px; font-size: 15px;">
+              Please review this booking request and approve or reject it in the admin dashboard.
+            </p>
+            <hr style="margin: 30px 0; border: none; border-top: 1px solid #dcdcdc;" />
+            <p style="font-size: 12px; color: #999; text-align: center;">
+              📬 This is an automated message from the Hall Booking System. Please do not reply.
+            </p>
+          </div>
+        `
+      });
+    } else {
+      console.warn(`No admin found for department: ${department.DeptName}. Admin notification email not sent.`);
+    }
+
+    // Send emails in parallel
+    const emailResults = await sendMultipleEmails(emailsToSend);
+    console.log(`Email sending completed: ${emailResults.successful} successful, ${emailResults.failed} failed`);
 
     res.status(201).json({ message: "Bookings created", bookings });
   } catch (error) {
