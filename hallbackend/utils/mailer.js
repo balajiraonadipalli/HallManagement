@@ -5,29 +5,27 @@ const transporter = nodemailer.createTransport({
   service: "gmail", 
   auth: {
     user: process.env.GMAIL_USER || "akashbalu2001@gmail.com",
-    pass: process.env.GMAIL_PASS || "dvqr exxe bayy hcou"  
+    pass: process.env.GMAIL_PASS || "psuh kzgd lsvt jfrd",
   },
-  // Performance optimizations
-  pool: true, // Use connection pooling
-  maxConnections: 5, // Maximum number of connections
-  maxMessages: 100, // Maximum messages per connection
-  rateDelta: 1000, // Time window for rate limiting
-  rateLimit: 10, // Maximum messages per time window
-  // Connection timeout settings
-  connectionTimeout: 60000, // 60 seconds
-  greetingTimeout: 30000, // 30 seconds
-  socketTimeout: 60000, // 60 seconds
-  // TLS options for better security and performance
+  pool: true,
+  maxConnections: 5,
+  maxMessages: 100,
+  rateDelta: 1000,
+  rateLimit: 10,
+  connectionTimeout: 60000,
+  greetingTimeout: 30000,
+  socketTimeout: 60000,
   secure: true,
   tls: {
     rejectUnauthorized: false
   }
 });
 
-// Verify transporter configuration
+// Verify transporter configuration (non-blocking)
 transporter.verify((error, success) => {
   if (error) {
     console.error('Email transporter verification failed:', error);
+    console.warn('Server will continue running, but emails may not send');
   } else {
     console.log('Email transporter ready to send messages');
   }

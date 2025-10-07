@@ -17,12 +17,9 @@ app.use(cors({
         'http://localhost:3000' // Local development
     ],
     credentials: true,
-    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization']
 }));
-
-// Or simpler - allow all origins (for testing):
-app.use(cors()); // This allows all domains
 
 mongoose.connect(process.env.mongoDb)
 .then(() =>{
