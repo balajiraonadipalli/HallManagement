@@ -71,8 +71,10 @@ function Form() {
                     toast.success(res.data);
                 }
             } catch (error) {
+                console.error("Booking Error Details:", error.response?.data);
                 if (error.response && error.response.status === 400) {
-                    toast.error("The slots are already occupied");
+                    const errorMsg = error.response?.data?.error || error.response?.data?.message || "The slots are already occupied";
+                    toast.error(errorMsg);
                 } else {
                     toast.error("Error in booking: " + (error.response?.data?.error || error.message));
                 }

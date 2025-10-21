@@ -1,25 +1,40 @@
 const nodemailer = require("nodemailer");
 
 // Create transporter with optimized configuration
-const transporter = nodemailer.createTransport({
-  service: "gmail", 
-  auth: {
-    user: process.env.GMAIL_USER || "akashbalu2001@gmail.com",
-    pass: process.env.GMAIL_PASS || "psuh kzgd lsvt jfrd",
-  },
-  pool: true,
-  maxConnections: 5,
-  maxMessages: 100,
-  rateDelta: 1000,
-  rateLimit: 10,
-  connectionTimeout: 60000,
-  greetingTimeout: 30000,
-  socketTimeout: 60000,
-  secure: true,
-  tls: {
-    rejectUnauthorized: false
-  }
-});
+// Uses Resend for production (Render), Gmail for local development
+const transporter = nodemailer.createTransport(
+  process.env.RESEND_API_KEY
+    ? {
+        // Resend configuration (for Render/production - works on cloud platforms)
+        host: 'smtp.resend.com',
+        port: 465,
+        secure: true,
+        auth: {
+          user: 'resend',
+          pass: process.env.RESEND_API_KEY
+        }
+      }
+    : {
+        // Gmail configuration (for local development only)
+        service: "gmail", 
+        auth: {
+          user: process.env.GMAIL_USER || "akashbalu2001@gmail.com",
+          pass: process.env.GMAIL_PASS || "psuh kzgd lsvt jfrd",
+        },
+        pool: true,
+        maxConnections: 5,
+        maxMessages: 100,
+        rateDelta: 1000,
+        rateLimit: 10,
+        connectionTimeout: 60000,
+        greetingTimeout: 30000,
+        socketTimeout: 60000,
+        secure: true,
+        tls: {
+          rejectUnauthorized: false
+        }
+      }
+);
 
 // Verify transporter configuration (non-blocking)
 transporter.verify((error, success) => {
@@ -33,7 +48,7 @@ transporter.verify((error, success) => {
 
 const sendBookingMail = async ({ to, subject, text, html }) => {
   const mailOptions = {
-    from: process.env.GMAIL_USER || "akashbalu2001@gmail.com",
+    from: process.env.EMAIL_FROM || process.env.GMAIL_USER || "akashbalu2001@gmail.com",
     to,
     subject,
     text,
