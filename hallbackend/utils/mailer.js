@@ -94,7 +94,13 @@ const sendViaBrevo = async ({ to, subject, text, html }) => {
 };
 
 const sendBookingMail = async ({ to, subject, text, html }) => {
-  // Use Resend API if available (works on Render - no SMTP port blocking)
+  // Priority 1: Use Brevo if configured (no recipient restrictions, 300 free emails/day)
+  if (brevoTransporter) {
+    return await sendViaBrevo({ to, subject, text, html });
+  }
+
+  // Priority 2: Use Resend API if available (works on Render - no SMTP port blocking)
+  // Note: Resend free tier only allows sending to account owner
   if (process.env.RESEND_API_KEY && Resend) {
     try {
       const fromEmail = process.env.EMAIL_FROM || "onboarding@resend.dev";
@@ -111,11 +117,6 @@ const sendBookingMail = async ({ to, subject, text, html }) => {
       });
 
       if (error) {
-        // If Resend fails due to recipient restriction, try Brevo fallback
-        if (error.statusCode === 403 && error.message?.includes('testing emails')) {
-          console.warn(`⚠️ Resend restriction: Can only send to account owner. Trying Brevo fallback...`);
-          return await sendViaBrevo({ to, subject, text, html });
-        }
         console.error(`❌ Resend API error for ${to}:`, error);
         return { success: false, error: error.message || JSON.stringify(error) };
       }
@@ -124,14 +125,8 @@ const sendBookingMail = async ({ to, subject, text, html }) => {
       return { success: true, messageId: data?.id };
     } catch (error) {
       console.error(`❌ Failed to send email via Resend API to ${to}:`, error);
-      // Try Brevo fallback
-      return await sendViaBrevo({ to, subject, text, html });
+      return { success: false, error: error.message };
     }
-  }
-
-  // Try Brevo if configured (works on Render, no recipient restrictions)
-  if (brevoTransporter) {
-    return await sendViaBrevo({ to, subject, text, html });
   }
 
   // Fallback to Gmail SMTP (for local development only)
