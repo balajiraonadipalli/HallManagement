@@ -41,7 +41,6 @@ if (brevoApiKey) {
 }
 
 // Verify Gmail transporter (only for local development)
-const brevoApiKey = process.env.BREVO_API_KEY || process.env.BREVO_SMTP_KEY;
 if (!process.env.RESEND_API_KEY && !brevoApiKey) {
   gmailTransporter.verify((error, success) => {
     if (error) {
