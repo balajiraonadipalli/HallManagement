@@ -1,2 +1,12 @@
 hallfrontend/node_modules
 hallbackend/node_modules
+
+# Environment variables (contains sensitive API keys)
+hallbackend/.env
+hallfrontend/.env
+.env
+
+# Documentation files (optional - can be committed if needed)
+# RESEND_DNS_SETUP.md
+# RESEND_QUICK_SETUP.md
+# TEST_RESEND_LOCALLY.md

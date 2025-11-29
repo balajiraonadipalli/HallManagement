@@ -21,16 +21,33 @@ app.use(cors({
     allowedHeaders: ['Content-Type', 'Authorization']
 }));
 
-mongoose.connect(process.env.mongoDb)
-.then(() =>{
-    console.log("MongoDb cconnected");
+// MongoDB connection with improved error handling
+mongoose.connect(process.env.mongoDb, {
+    serverSelectionTimeoutMS: 5000, // Timeout after 5s instead of 30s
+    socketTimeoutMS: 45000,
+})
+.then(() => {
+    console.log("MongoDB connected successfully");
+})
+.catch((error) => {
+    console.error("MongoDB connection error:", error.message);
+    console.error("Error code:", error.code);
+    console.warn("Server will continue running, but database operations will fail");
+    console.warn("Troubleshooting:");
+    console.warn("1. Check your internet connection");
+    console.warn("2. Verify MongoDB Atlas cluster is running");
+    console.warn("3. Check if your IP is whitelisted in MongoDB Atlas");
+    console.warn("4. Try: ping cluster0.6ujkutb.mongodb.net");
 });
 //mongodb://localhost:27017/hall_booking
 
 app.use("/",BookingRouter);
 app.use("/",LoginRouter);
 
-app.listen(process.env.PORT,'0.0.0.0',console.log("Server Started at 3900"));
+const PORT = process.env.PORT || 3900;
+app.listen(PORT, '0.0.0.0', () => {
+    console.log(`Server Started at ${PORT}`);
+});
 
 
 

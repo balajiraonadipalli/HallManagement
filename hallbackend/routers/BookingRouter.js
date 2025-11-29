@@ -496,4 +496,76 @@ BookingRouter.get('/bookings/fully-occupied', async (req, res) => {
     res.status(500).json({ message: 'Error fetching fully occupied dates' });
   }
 });
+
+// Test email endpoint for debugging Resend configuration
+BookingRouter.get("/test-email", async (req, res) => {
+  try {
+    console.log("=== TEST EMAIL ENDPOINT CALLED ===");
+    console.log("RESEND_API_KEY:", process.env.RESEND_API_KEY ? "SET (hidden)" : "NOT SET");
+    console.log("EMAIL_FROM:", process.env.EMAIL_FROM || "NOT SET - will use default");
+    console.log("GMAIL_USER:", process.env.GMAIL_USER || "NOT SET");
+    
+    const testEmail = req.query.email || "akashbalu2001@gmail.com";
+    console.log(`Sending test email to: ${testEmail}`);
+    
+    const result = await sendBookingMail({
+      to: testEmail,
+      subject: "Test Email from Hall Booking System (Resend)",
+      text: "This is a test email from your Hall Booking System. If you receive this, Resend is working correctly!",
+      html: `
+        <div style="font-family: Arial, sans-serif; padding: 20px; background-color: #f4f4f4;">
+          <div style="max-width: 600px; margin: auto; background: white; border-radius: 10px; padding: 30px; box-shadow: 0 2px 5px rgba(0,0,0,0.1);">
+            <h1 style="color: #2c3e50;">✅ Resend Email Test Successful!</h1>
+            <p>This is a test email from your Hall Booking System.</p>
+            <hr style="margin: 20px 0; border: none; border-top: 1px solid #ddd;" />
+            <p><strong>Server:</strong> ${process.env.NODE_ENV || 'development'}</p>
+            <p><strong>Email Service:</strong> ${process.env.RESEND_API_KEY ? 'Resend' : 'Gmail (fallback)'}</p>
+            <p><strong>From Email:</strong> ${process.env.EMAIL_FROM || 'onboarding@resend.dev'}</p>
+            <p><strong>Timestamp:</strong> ${new Date().toISOString()}</p>
+            <hr style="margin: 20px 0; border: none; border-top: 1px solid #ddd;" />
+            <p style="color: green; font-weight: bold;">✅ If you received this email, Resend is configured correctly!</p>
+            <p style="color: #666; font-size: 12px; margin-top: 20px;">
+              You can now update these environment variables in Render for production.
+            </p>
+          </div>
+        </div>
+      `
+    });
+    
+    console.log("Test email result:", result);
+    
+    res.status(200).json({ 
+      message: "Test email sent successfully", 
+      result,
+      configuration: {
+        emailService: process.env.RESEND_API_KEY ? 'Resend' : 'Gmail (fallback)',
+        fromEmail: process.env.EMAIL_FROM || (process.env.RESEND_API_KEY ? 'onboarding@resend.dev' : process.env.GMAIL_USER || 'not set'),
+        resendApiKeySet: !!process.env.RESEND_API_KEY,
+        emailFromSet: !!process.env.EMAIL_FROM,
+        nodeEnv: process.env.NODE_ENV || 'development'
+      }
+    });
+  } catch (error) {
+    console.error("Test email error:", error);
+    res.status(500).json({ 
+      error: error.message,
+      code: error.code,
+      stack: process.env.NODE_ENV !== 'production' ? error.stack : undefined,
+      configuration: {
+        emailService: process.env.RESEND_API_KEY ? 'Resend' : 'Gmail (fallback)',
+        resendApiKeySet: !!process.env.RESEND_API_KEY,
+        emailFromSet: !!process.env.EMAIL_FROM,
+        nodeEnv: process.env.NODE_ENV || 'development'
+      },
+      troubleshooting: {
+        message: "Check your .env file in hallbackend folder",
+        requiredVars: [
+          "RESEND_API_KEY=re_your_api_key_here",
+          "EMAIL_FROM=onboarding@resend.dev"
+        ]
+      }
+    });
+  }
+});
+
 module.exports = BookingRouter;

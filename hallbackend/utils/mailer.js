@@ -47,8 +47,19 @@ transporter.verify((error, success) => {
 });
 
 const sendBookingMail = async ({ to, subject, text, html }) => {
+  // Determine FROM email address
+  let fromEmail;
+  if (process.env.RESEND_API_KEY) {
+    // If using Resend, use default domain if custom domain not verified
+    // Resend default domain: onboarding@resend.dev (works without DNS verification)
+    fromEmail = process.env.EMAIL_FROM || "onboarding@resend.dev";
+  } else {
+    // Gmail fallback
+    fromEmail = process.env.EMAIL_FROM || process.env.GMAIL_USER || "akashbalu2001@gmail.com";
+  }
+  
   const mailOptions = {
-    from: process.env.EMAIL_FROM || process.env.GMAIL_USER || "akashbalu2001@gmail.com",
+    from: fromEmail,
     to,
     subject,
     text,
