@@ -34,29 +34,15 @@ const gmailTransporter = nodemailer.createTransport({
   }
 });
 
-// Brevo (Sendinblue) transporter - works on Render, no recipient restrictions
-let brevoTransporter = null;
-if (process.env.BREVO_SMTP_KEY) {
-  brevoTransporter = nodemailer.createTransport({
-    host: "smtp-relay.brevo.com",
-    port: 587,
-    secure: false, // true for 465, false for other ports
-    auth: {
-      user: process.env.BREVO_SMTP_USER || process.env.BREVO_EMAIL,
-      pass: process.env.BREVO_SMTP_KEY
-    },
-    connectionTimeout: 60000,
-    greetingTimeout: 30000,
-    socketTimeout: 60000,
-    tls: {
-      rejectUnauthorized: false
-    }
-  });
-  console.log('✅ Brevo SMTP configured (300 free emails/day, no recipient restrictions)');
+// Brevo API configuration check
+const brevoApiKey = process.env.BREVO_API_KEY || process.env.BREVO_SMTP_KEY;
+if (brevoApiKey) {
+  console.log('✅ Brevo API configured (using HTTPS - no port blocking, 300 free emails/day, no recipient restrictions)');
 }
 
 // Verify Gmail transporter (only for local development)
-if (!process.env.RESEND_API_KEY && !process.env.BREVO_SMTP_KEY) {
+const brevoApiKey = process.env.BREVO_API_KEY || process.env.BREVO_SMTP_KEY;
+if (!process.env.RESEND_API_KEY && !brevoApiKey) {
   gmailTransporter.verify((error, success) => {
     if (error) {
       console.error('Gmail transporter verification failed:', error);
@@ -67,35 +53,59 @@ if (!process.env.RESEND_API_KEY && !process.env.BREVO_SMTP_KEY) {
   });
 }
 
-// Helper function to send via Brevo
+// Helper function to send via Brevo API (HTTPS - works on Render)
 const sendViaBrevo = async ({ to, subject, text, html }) => {
-  if (!brevoTransporter) {
-    return { success: false, error: 'Brevo not configured. Set BREVO_SMTP_KEY in environment variables.' };
+  const brevoApiKey = process.env.BREVO_API_KEY || process.env.BREVO_SMTP_KEY;
+  
+  if (!brevoApiKey) {
+    return { success: false, error: 'Brevo not configured. Set BREVO_API_KEY or BREVO_SMTP_KEY in environment variables.' };
   }
 
   try {
     const fromEmail = process.env.BREVO_EMAIL || process.env.EMAIL_FROM || "akashbalu2001@gmail.com";
-    console.log(`📧 Using Brevo SMTP to send email to: ${to}`);
+    const fromName = process.env.BREVO_FROM_NAME || "Hall Booking System";
     
-    const info = await brevoTransporter.sendMail({
-      from: fromEmail,
-      to: to,
-      subject: subject,
-      html: html || text,
-      text: text
+    console.log(`📧 Using Brevo API (HTTPS) to send email to: ${to}`);
+    
+    // Use Brevo REST API via HTTPS (no SMTP port blocking)
+    const response = await fetch('https://api.brevo.com/v3/smtp/email', {
+      method: 'POST',
+      headers: {
+        'accept': 'application/json',
+        'api-key': brevoApiKey,
+        'content-type': 'application/json'
+      },
+      body: JSON.stringify({
+        sender: {
+          name: fromName,
+          email: fromEmail
+        },
+        to: [{ email: to }],
+        subject: subject,
+        htmlContent: html || text,
+        textContent: text
+      })
     });
 
-    console.log(`✅ Email sent successfully via Brevo to ${to}. Message ID: ${info.messageId}`);
-    return { success: true, messageId: info.messageId };
+    const data = await response.json();
+
+    if (!response.ok) {
+      console.error(`❌ Brevo API error for ${to}:`, data);
+      return { success: false, error: data.message || JSON.stringify(data) };
+    }
+
+    console.log(`✅ Email sent successfully via Brevo API to ${to}. Message ID: ${data.messageId}`);
+    return { success: true, messageId: data.messageId };
   } catch (error) {
-    console.error(`❌ Failed to send email via Brevo to ${to}:`, error);
+    console.error(`❌ Failed to send email via Brevo API to ${to}:`, error);
     return { success: false, error: error.message };
   }
 };
 
 const sendBookingMail = async ({ to, subject, text, html }) => {
-  // Priority 1: Use Brevo if configured (no recipient restrictions, 300 free emails/day)
-  if (brevoTransporter) {
+  // Priority 1: Use Brevo API if configured (no recipient restrictions, 300 free emails/day, works on Render)
+  const brevoApiKey = process.env.BREVO_API_KEY || process.env.BREVO_SMTP_KEY;
+  if (brevoApiKey) {
     return await sendViaBrevo({ to, subject, text, html });
   }
 
