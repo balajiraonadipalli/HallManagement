@@ -34,8 +34,29 @@ const gmailTransporter = nodemailer.createTransport({
   }
 });
 
+// Brevo (Sendinblue) transporter - works on Render, no recipient restrictions
+let brevoTransporter = null;
+if (process.env.BREVO_SMTP_KEY) {
+  brevoTransporter = nodemailer.createTransport({
+    host: "smtp-relay.brevo.com",
+    port: 587,
+    secure: false, // true for 465, false for other ports
+    auth: {
+      user: process.env.BREVO_SMTP_USER || process.env.BREVO_EMAIL,
+      pass: process.env.BREVO_SMTP_KEY
+    },
+    connectionTimeout: 60000,
+    greetingTimeout: 30000,
+    socketTimeout: 60000,
+    tls: {
+      rejectUnauthorized: false
+    }
+  });
+  console.log('✅ Brevo SMTP configured (300 free emails/day, no recipient restrictions)');
+}
+
 // Verify Gmail transporter (only for local development)
-if (!process.env.RESEND_API_KEY) {
+if (!process.env.RESEND_API_KEY && !process.env.BREVO_SMTP_KEY) {
   gmailTransporter.verify((error, success) => {
     if (error) {
       console.error('Gmail transporter verification failed:', error);
@@ -45,6 +66,32 @@ if (!process.env.RESEND_API_KEY) {
     }
   });
 }
+
+// Helper function to send via Brevo
+const sendViaBrevo = async ({ to, subject, text, html }) => {
+  if (!brevoTransporter) {
+    return { success: false, error: 'Brevo not configured. Set BREVO_SMTP_KEY in environment variables.' };
+  }
+
+  try {
+    const fromEmail = process.env.BREVO_EMAIL || process.env.EMAIL_FROM || "akashbalu2001@gmail.com";
+    console.log(`📧 Using Brevo SMTP to send email to: ${to}`);
+    
+    const info = await brevoTransporter.sendMail({
+      from: fromEmail,
+      to: to,
+      subject: subject,
+      html: html || text,
+      text: text
+    });
+
+    console.log(`✅ Email sent successfully via Brevo to ${to}. Message ID: ${info.messageId}`);
+    return { success: true, messageId: info.messageId };
+  } catch (error) {
+    console.error(`❌ Failed to send email via Brevo to ${to}:`, error);
+    return { success: false, error: error.message };
+  }
+};
 
 const sendBookingMail = async ({ to, subject, text, html }) => {
   // Use Resend API if available (works on Render - no SMTP port blocking)
@@ -64,6 +111,11 @@ const sendBookingMail = async ({ to, subject, text, html }) => {
       });
 
       if (error) {
+        // If Resend fails due to recipient restriction, try Brevo fallback
+        if (error.statusCode === 403 && error.message?.includes('testing emails')) {
+          console.warn(`⚠️ Resend restriction: Can only send to account owner. Trying Brevo fallback...`);
+          return await sendViaBrevo({ to, subject, text, html });
+        }
         console.error(`❌ Resend API error for ${to}:`, error);
         return { success: false, error: error.message || JSON.stringify(error) };
       }
@@ -72,8 +124,14 @@ const sendBookingMail = async ({ to, subject, text, html }) => {
       return { success: true, messageId: data?.id };
     } catch (error) {
       console.error(`❌ Failed to send email via Resend API to ${to}:`, error);
-      return { success: false, error: error.message };
+      // Try Brevo fallback
+      return await sendViaBrevo({ to, subject, text, html });
     }
+  }
+
+  // Try Brevo if configured (works on Render, no recipient restrictions)
+  if (brevoTransporter) {
+    return await sendViaBrevo({ to, subject, text, html });
   }
 
   // Fallback to Gmail SMTP (for local development only)
