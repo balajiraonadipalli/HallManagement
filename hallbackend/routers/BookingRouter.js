@@ -502,6 +502,8 @@ BookingRouter.get("/test-email", async (req, res) => {
   try {
     console.log("=== TEST EMAIL ENDPOINT CALLED ===");
     console.log("RESEND_API_KEY:", process.env.RESEND_API_KEY ? "SET (hidden)" : "NOT SET");
+    console.log("BREVO_SMTP_KEY:", process.env.BREVO_SMTP_KEY ? "SET (hidden)" : "NOT SET");
+    console.log("BREVO_EMAIL:", process.env.BREVO_EMAIL || "NOT SET");
     console.log("EMAIL_FROM:", process.env.EMAIL_FROM || "NOT SET - will use default");
     console.log("GMAIL_USER:", process.env.GMAIL_USER || "NOT SET");
     
@@ -510,20 +512,20 @@ BookingRouter.get("/test-email", async (req, res) => {
     
     const result = await sendBookingMail({
       to: testEmail,
-      subject: "Test Email from Hall Booking System (Resend)",
-      text: "This is a test email from your Hall Booking System. If you receive this, Resend is working correctly!",
+      subject: "Test Email from Hall Booking System",
+      text: "This is a test email from your Hall Booking System. If you receive this, your email service is working correctly!",
       html: `
         <div style="font-family: Arial, sans-serif; padding: 20px; background-color: #f4f4f4;">
           <div style="max-width: 600px; margin: auto; background: white; border-radius: 10px; padding: 30px; box-shadow: 0 2px 5px rgba(0,0,0,0.1);">
-            <h1 style="color: #2c3e50;">✅ Resend Email Test Successful!</h1>
+            <h1 style="color: #2c3e50;">✅ Email Test Successful!</h1>
             <p>This is a test email from your Hall Booking System.</p>
             <hr style="margin: 20px 0; border: none; border-top: 1px solid #ddd;" />
             <p><strong>Server:</strong> ${process.env.NODE_ENV || 'development'}</p>
-            <p><strong>Email Service:</strong> ${process.env.RESEND_API_KEY ? 'Resend' : 'Gmail (fallback)'}</p>
-            <p><strong>From Email:</strong> ${process.env.EMAIL_FROM || 'onboarding@resend.dev'}</p>
+            <p><strong>Email Service:</strong> ${process.env.BREVO_SMTP_KEY ? 'Brevo' : (process.env.RESEND_API_KEY ? 'Resend' : 'Gmail (fallback)')}</p>
+            <p><strong>From Email:</strong> ${process.env.EMAIL_FROM || (process.env.BREVO_EMAIL || 'onboarding@resend.dev')}</p>
             <p><strong>Timestamp:</strong> ${new Date().toISOString()}</p>
             <hr style="margin: 20px 0; border: none; border-top: 1px solid #ddd;" />
-            <p style="color: green; font-weight: bold;">✅ If you received this email, Resend is configured correctly!</p>
+            <p style="color: green; font-weight: bold;">✅ If you received this email, your email service is configured correctly!</p>
             <p style="color: #666; font-size: 12px; margin-top: 20px;">
               You can now update these environment variables in Render for production.
             </p>
@@ -538,9 +540,11 @@ BookingRouter.get("/test-email", async (req, res) => {
       message: "Test email sent successfully", 
       result,
       configuration: {
-        emailService: process.env.RESEND_API_KEY ? 'Resend' : 'Gmail (fallback)',
-        fromEmail: process.env.EMAIL_FROM || (process.env.RESEND_API_KEY ? 'onboarding@resend.dev' : process.env.GMAIL_USER || 'not set'),
+        emailService: process.env.BREVO_SMTP_KEY ? 'Brevo' : (process.env.RESEND_API_KEY ? 'Resend' : 'Gmail (fallback)'),
+        fromEmail: process.env.EMAIL_FROM || (process.env.BREVO_EMAIL || process.env.RESEND_API_KEY ? 'onboarding@resend.dev' : process.env.GMAIL_USER || 'not set'),
         resendApiKeySet: !!process.env.RESEND_API_KEY,
+        brevoSmtpKeySet: !!process.env.BREVO_SMTP_KEY,
+        brevoEmailSet: !!process.env.BREVO_EMAIL,
         emailFromSet: !!process.env.EMAIL_FROM,
         nodeEnv: process.env.NODE_ENV || 'development'
       }
@@ -552,8 +556,10 @@ BookingRouter.get("/test-email", async (req, res) => {
       code: error.code,
       stack: process.env.NODE_ENV !== 'production' ? error.stack : undefined,
       configuration: {
-        emailService: process.env.RESEND_API_KEY ? 'Resend' : 'Gmail (fallback)',
+        emailService: process.env.BREVO_SMTP_KEY ? 'Brevo' : (process.env.RESEND_API_KEY ? 'Resend' : 'Gmail (fallback)'),
         resendApiKeySet: !!process.env.RESEND_API_KEY,
+        brevoSmtpKeySet: !!process.env.BREVO_SMTP_KEY,
+        brevoEmailSet: !!process.env.BREVO_EMAIL,
         emailFromSet: !!process.env.EMAIL_FROM,
         nodeEnv: process.env.NODE_ENV || 'development'
       },

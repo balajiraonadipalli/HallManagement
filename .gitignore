@@ -6,6 +6,11 @@ hallbackend/.env
 hallfrontend/.env
 .env
 
+# Files containing API keys or secrets
+*_ENV_SETUP.txt
+*_SETUP.txt
+*_KEYS.txt
+
 # Documentation files (optional - can be committed if needed)
 # RESEND_DNS_SETUP.md
 # RESEND_QUICK_SETUP.md
