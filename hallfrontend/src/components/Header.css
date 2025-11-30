@@ -72,11 +72,25 @@
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 }
 
+.logo-container {
+  display: flex;
+  flex-direction: column;
+}
+
 .logo {
   margin: 0;
   font-size: 1.5rem;
   font-weight: 600;
   color: #ecf0f1;
+  line-height: 1.2;
+}
+
+.logo-subtitle {
+  margin: 0;
+  font-size: 0.9rem;
+  font-weight: 400;
+  color: #bdc3c7;
+  line-height: 1.2;
 }
 
 .nav-links {

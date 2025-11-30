@@ -133,7 +133,20 @@ BookingRouter.post("/bookings", protect, async (req, res) => {
       emailsToSend.push({
         to: admin.email,
         subject: `New Hall Booking Request - ${hallName}`,
-        text: `A new hall booking request has been made and requires your approval.`,
+        text: `A new hall booking request has been made and requires your approval.
+
+Hall: ${hallName}
+Booked By: ${name}
+Email: ${req.user.email}
+Department: ${department.DeptName}
+Meeting Description: ${MeetingDescription || "Not provided"}
+Time Slot: ${startTime} to ${endTime}
+Booking ${dates.length > 1 ? "Dates" : "Date"}: ${dates.length > 1 ? `${fromDate} to ${toDate}` : `${bookingDate}`}
+Status: Pending Approval
+
+Please review this booking request and approve or reject it in the admin dashboard.
+
+Visit: https://hall-management-sandy.vercel.app/`,
         html: `
           <div style="max-width: 600px; margin: auto; padding: 20px; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f9f9f9; border: 1px solid #e0e0e0; border-radius: 8px;">
             <h2 style="color: #34495e; text-align: center; border-bottom: 2px solid #3498db; padding-bottom: 10px;">📌 Hall Booking Request</h2>
@@ -176,6 +189,18 @@ BookingRouter.post("/bookings", protect, async (req, res) => {
             <p style="margin-top: 30px; font-size: 15px;">
               Please review this booking request and approve or reject it in the admin dashboard.
             </p>
+            <div style="text-align: center; margin: 30px 0;">
+              <a href="https://hall-management-sandy.vercel.app/" 
+                 style="display: inline-block; padding: 12px 30px; background-color: #3498db; color: white; text-decoration: none; border-radius: 5px; font-weight: bold; font-size: 16px; margin: 10px;">
+                Go to Admin Dashboard
+              </a>
+            </div>
+            <div style="text-align: center; margin: 20px 0; padding: 15px; background-color: #ecf0f1; border-radius: 5px;">
+              <p style="margin: 0; font-size: 14px; color: #2c3e50; font-weight: bold;">🔗 Click here to access the dashboard:</p>
+              <p style="margin: 10px 0 0 0; font-size: 16px;">
+                <a href="https://hall-management-sandy.vercel.app/" style="color: #3498db; text-decoration: underline; font-weight: bold;">https://hall-management-sandy.vercel.app/</a>
+              </p>
+            </div>
             <hr style="margin: 30px 0; border: none; border-top: 1px solid #dcdcdc;" />
             <p style="font-size: 12px; color: #999; text-align: center;">
               📬 This is an automated message from the Hall Booking System. Please do not reply.

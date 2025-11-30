@@ -35,7 +35,10 @@ function Header() {
   return (
     <>
       <header className='header'>
-        <h4 className='logo'>Hall Booking System</h4>
+        <div className='logo-container'>
+          <h4 className='logo'>MVGR College of Engineering</h4>
+          <p className='logo-subtitle'>Hall Booking System</p>
+        </div>
         <nav className='nav-links'>
           <Link to="/Booking" className='nav-link'>Booking</Link>
           {adm === "admin" && (
