@@ -10,14 +10,14 @@
 }
 
 .Departments {
-  display: flex;
-  gap: 20px;
-  padding: 20px 40px;
-  max-width: 400px;
-  margin: auto;
-  height:100%;
+  display: grid;
+  grid-template-columns: 1fr;              /* mobile: 1 column */
+  row-gap: 16px;
+  padding: 20px 24px;
+  max-width: 480px;
+  margin: 0 auto 40px auto;
   box-sizing: border-box;
-  flex-wrap: wrap;
+  justify-items: center; /* center cards horizontally */
 }
 
 .departmentCard {
@@ -44,9 +44,14 @@
   border-color: #00acc1;
 }
 
-@media (max-width: 600px) {
-  .departmentCard {
-    font-size: 16px;
-    padding: 16px;
+/* Tablet and above: 2 columns */
+@media (min-width: 768px) {
+  .Departments {
+    grid-template-columns: repeat(2, minmax(220px, 1fr));
+    column-gap: 40px;
+    row-gap: 20px;
+    max-width: 900px;
+    padding: 20px 40px;
+    justify-items: center; /* keep centered on larger screens */
   }
 }
